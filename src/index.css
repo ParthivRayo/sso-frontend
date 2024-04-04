@@ -1,11 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-html,
-body,
-:root {
-  @apply h-screen w-screen;
+* {
+  scroll-behavior: smooth;
 }
 
 @layer base {
@@ -30,6 +30,8 @@ body,
     --input: 214.3 31.8% 91.4%;
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
+    --primary-blue: 249, 90%, 54%;
+    --primary-pink: 335, 99%, 58%;
   }
 
   .dark {
