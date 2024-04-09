@@ -15,9 +15,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useToast } from "@/components/ui/use-toast";
 
 const SignIn: FC = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   const formSchema = z.object({
     email: z.string(),
     password: z.string(),
@@ -31,17 +35,27 @@ const SignIn: FC = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
-  }
 
+    try {
+      // TODO: Login logic
+
+      navigate("/product");
+    } catch (error) {
+      toast({
+        title: "Something went wrong!",
+        variant: "destructive",
+      });
+    }
+  };
   return (
     <main className="min-h-screen bg-primary-blue">
       <section
         id="signIn"
-        className="container mx-auto flex h-screen flex-col items-center gap-16 py-20"
+        className="container mx-auto flex h-screen flex-col items-center gap-16 pt-40"
       >
-        <h1 className="text-8xl font-bold text-white">
+        <h1 className="text-8xl font-bold text-white" tabIndex={0}>
           Sign In
           <br />
           to Get Started!
@@ -53,7 +67,7 @@ const SignIn: FC = () => {
               variant: "pink",
               size: "xl",
             }),
-            "w-40 rounded-full text-lg",
+            "h-24 w-80 rounded-full text-6xl",
           )}
         >
           Sign In

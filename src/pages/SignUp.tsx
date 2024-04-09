@@ -1,8 +1,8 @@
+import { FC } from "react";
 import { Button, buttonVariants } from "@/components/ui/Button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Label } from "@/components/ui/Label";
-import { FC } from "react";
 import {
   Form,
   FormControl,
@@ -15,9 +15,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useToast } from "@/components/ui/use-toast";
 
 const SignUp: FC = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   const formSchema = z.object({
     email: z.string(),
     firstName: z.string(),
@@ -37,17 +42,36 @@ const SignUp: FC = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
-  }
+    const { firstName, lastName, email, password } = values;
+
+    const payload = {
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      password: password,
+    };
+
+    try {
+      await axios.post("http://localhost:8000/users", payload);
+
+      navigate("/sign-in");
+    } catch (error) {
+      toast({
+        title: "Something went wrong!",
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <main className="min-h-screen bg-primary-blue">
       <section
         id="signIn"
-        className="container mx-auto flex h-screen flex-col items-center gap-16 py-20"
+        className="container mx-auto flex h-screen flex-col items-center gap-16 pt-40"
       >
-        <h1 className="text-8xl font-bold text-white">
+        <h1 className="text-8xl font-bold text-white" tabIndex={0}>
           Sign Up
           <br />
           to Get Started!
@@ -59,7 +83,7 @@ const SignUp: FC = () => {
               variant: "pink",
               size: "xl",
             }),
-            "w-40 rounded-full text-lg",
+            "h-24 w-80 rounded-full text-6xl",
           )}
         >
           Sign Up
@@ -126,7 +150,7 @@ const SignUp: FC = () => {
                   name="lastName"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Last name</FormLabel>
+                      <FormLabel>Last Name</FormLabel>
                       <FormControl>
                         <Input
                           type="text"
