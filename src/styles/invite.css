@@ -1,0 +1,135 @@
+.invite-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #3F20F3;
+    position: relative;
+    overflow: hidden;
+  }
+  .animation-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 4px; /* Adjust the height as needed */
+    background-color: #FE2882; /* Pink color */
+    animation: fillLine forwards;
+  }
+  
+  @keyframes fillLine {
+    to {
+      width: 100%;
+    }
+  }
+  
+  .blob-image-2 {
+    position: absolute;
+    width: 50%;
+    height: auto;
+    top: var(--text-top, 40%);
+    left: var(--text-left, 25%);
+    transform: translate(-50%, -50%);
+  }
+  
+  .text-white-italic {
+    color: #FFFFFF; /* White color */
+    font-style: italic; /* Italic font style */
+  }
+  
+  .invite-text {
+    position: absolute;
+    text-align: left;
+    z-index: 100;
+    transform: translate(-50%, -50%);
+    top: var(--blob-top, 60%);
+    left: var(--blob-left, 70%);
+  }
+  
+  .lets-make-web-browsing,
+  .fun-and-simple,
+  .together {
+    font-size: 5rem; /* Base font size */
+    font-weight: bold;
+  }
+  
+  .lets-make-web-browsing {
+    color: #FE2882;
+    font-style: italic;
+  }
+  
+  .fun-and-simple {
+    color: #FE2882;
+    display: inline;
+    white-space: nowrap; /* Ensures "Fun and Simple" is on one line */
+
+  }
+  
+  .together {
+    color: #FFFFFF;
+    font-weight: 600;
+  }
+  
+  @media (max-width: 1105px) {
+    .lets-make-web-browsing,
+    .fun-and-simple,
+    .together {
+      font-size: 4.2rem; /* Adjusted font size for screens narrower than 1045px */
+    }
+  
+    .blob-image-2 {
+      width: 60%; /* Adjust blob size for these screens */
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .lets-make-web-browsing,
+    .fun-and-simple,
+    .together {
+      font-size: 3.5rem; /* Smaller font size for tablets and large phones */
+    }
+  
+    .blob-image-2 {
+        top: var(--blob-top, 25%);
+        left: var(--blob-left, 25%);
+
+      width: 80%; /* Keep blob size adjusted for these screens */
+    }
+  }
+  
+  @media (max-width: 666px) {
+    .lets-make-web-browsing,
+    .fun-and-simple,
+    .together {
+      font-size: 3rem; /* Even smaller font size for mobile phones */
+    }
+  
+    .blob-image-2 {
+        top: var(--blob-top, 25%);
+        left: var(--blob-left, 50%);
+      width: 90%; 
+    }
+    .invite-text {
+        top: var(--text-top, 70%);
+        left: var(--text-left, 55%);
+        
+      }
+  }
+  @media (max-width: 425) {
+    .lets-make-web-browsing,
+    .fun-and-simple,
+    .together {
+      font-size: 1rem; /* Even smaller font size for mobile phones */
+    }
+  
+    .blob-image-2 {
+      width: 90%; /* Adjust blob size for mobile screens */
+    }
+    .invite-text {
+        top: var(--text-top, 70%);
+        left: var(--text-left, 55%);
+        
+      }
+  }
+  

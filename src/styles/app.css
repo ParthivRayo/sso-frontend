@@ -1,0 +1,36 @@
+/* App.css */
+
+/* Define animation keyframes for entering and leaving */
+@keyframes fadeIn {
+    from {
+      opacity: 0.85;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  /* Apply the animation to the container of each component */
+  .app-container {
+    position: relative;
+  }
+  
+  /* Define animation for entering the component */
+  .app-container > div {
+    animation: fadeIn 2s ease-in-out forwards;
+  }
+  
+  /* Define animation for leaving the component */
+  .app-container > div.leave {
+    animation: fadeOut 2s ease-in-out backwards;
+  }
+  
