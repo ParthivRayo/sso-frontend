@@ -1,4 +1,3 @@
-// App.tsx
 import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import LoadScreen from "@/components/ui/LoadScreen";
@@ -10,30 +9,31 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showGreetings, setShowGreetings] = useState(false);
   const [showInvite, setShowInvite] = useState(false);
+  const [speechDone, setSpeechDone] = useState(false);
 
   useEffect(() => {
-    // Timer to simulate the loading process
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
-      setShowGreetings(true); // Once loading is done, show greetings
+      setShowGreetings(true);
+      if (!speechDone) {
+        speak();
+        setSpeechDone(true);
+      }
     }, 2500); // 2.5 seconds for the loading screen
 
-    // Cleanup function to clear the timer
     return () => clearTimeout(loadingTimer);
-  }, []);
+  }, [speechDone]);
 
   useEffect(() => {
-    let greetingsTimer: ReturnType<typeof setTimeout>;
-
+    let greetingsTimer: ReturnType<typeof setTimeout> | undefined;
     if (showGreetings) {
-      // Set a timer to hide the greetings screen after 3 seconds
       greetingsTimer = setTimeout(() => {
         setShowGreetings(false);
-        setShowInvite(true); // Show the Invite component after hiding Greetings
-      }, 4000); // 4 seconds for the greetings screen
+        setShowInvite(true);
+      }, 4000); // Greetings shown for 4 seconds
     }
 
-    // Cleanup function to clear the timer
+    // Return a cleanup function that will clear the timeout
     return () => {
       if (greetingsTimer) {
         clearTimeout(greetingsTimer);
@@ -43,17 +43,24 @@ const App = () => {
 
   useEffect(() => {
     if (showInvite) {
-      // Set a timer to hide the Invite component after 3 seconds
       const inviteTimer = setTimeout(() => {
         setShowInvite(false);
-      }, 4000); // 4 seconds for the Invite screen
+      }, 4000); // Invite shown for 4 seconds
 
-      // Cleanup function to clear the timer
       return () => clearTimeout(inviteTimer);
     }
   }, [showInvite]);
 
-  // Render logic based on loading, greeting, and invite states
+  const speak = () => {
+    const message = new SpeechSynthesisUtterance(
+      "Hi there, welcome to Rayo. Lets make web browsing fun and simple together",
+    );
+    message.pitch = 2;
+    message.rate = 0.7;
+    //message.lang = "fr-FR"; #use rate 0.8 for this
+    window.speechSynthesis.speak(message);
+  };
+
   return (
     <div className="app-container">
       {isLoading && <LoadScreen />}
