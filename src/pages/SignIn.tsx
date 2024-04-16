@@ -16,6 +16,8 @@ import { useForm } from "react-hook-form";
 import { Checkbox } from "@/components/ui/Checkbox";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { smoothScroll } from "../utils/SmoothScroll";
 
 const SignIn: FC = () => {
   const formSchema = z.object({
@@ -30,6 +32,77 @@ const SignIn: FC = () => {
       password: "",
     },
   });
+  const signInButtonRef = useRef<HTMLButtonElement>(null);
+  const signInformRef = useRef<HTMLDivElement>(null); // Reference to the sign-in form section
+  const [isRememberMeChecked, setIsRememberMeChecked] = useState(false);
+
+  useEffect(() => {
+    // Automatically focus the button when the component mounts
+    if (signInButtonRef.current) {
+      signInButtonRef.current.focus();
+    }
+  }, []);
+
+  const scrollToSignInform = () => {
+    if (signInformRef.current) {
+      const scrollTarget = "#signInform"; // CSS selector of the target element
+      smoothScroll(scrollTarget, 2000); // You can adjust the duration as needed
+    }
+  };
+  const speakWithDelay = (text: string): void => {
+    if ("speechSynthesis" in window) {
+      // Create a new utterance for the provided text
+      const utterance = new SpeechSynthesisUtterance(text);
+
+      // Set the properties of the utterance
+      utterance.pitch = 2; // Higher pitch
+      utterance.rate = 0.8; // Slower rate of speech
+      utterance.lang = "fr-FR"; // French language
+
+      // Cancel any previously scheduled speech to avoid overlaps
+      speechSynthesis.cancel();
+
+      // Delay the speech synthesis
+      setTimeout(() => {
+        speechSynthesis.speak(utterance); // Speak after a 100ms delay
+      }, 100);
+    } else {
+      // Log an error message if speech synthesis is not supported
+      console.error("Your browser does not support speech synthesis.");
+    }
+  };
+  const speak = (text: string): void => {
+    if ("speechSynthesis" in window) {
+      // Create a new utterance for the provided text
+      const utterance = new SpeechSynthesisUtterance(text);
+
+      // Set the properties of the utterance
+      utterance.pitch = 2; // Higher pitch
+      utterance.rate = 0.8; // Slower rate of speech
+      utterance.lang = "fr-FR"; // French language
+
+      // Cancel any previously scheduled speech to avoid overlaps
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance); // Speak after a 100ms delay
+    } else {
+      // Log an error message if speech synthesis is not supported
+      console.error("Your browser does not support speech synthesis.");
+    }
+  };
+
+  const toggleRememberMe = () => {
+    setIsRememberMeChecked(!isRememberMeChecked);
+    speak(`Toggled remember me ${isRememberMeChecked ? "off" : "on"}`);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent) => {
+    // Check if the key pressed is 'Enter' or 'Space'
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      speak("You are now in the sign in form, please use tab to navigate.");
+      scrollToSignInform();
+    }
+  };
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
@@ -46,18 +119,33 @@ const SignIn: FC = () => {
           <br />
           to Get Started!
         </h1>
-        <a
-          href="#signInform"
-          className={cn(
-            buttonVariants({
-              variant: "pink",
-              size: "xl",
-            }),
-            "w-40 rounded-full text-lg",
-          )}
-        >
-          Sign In
-        </a>
+        <Link to="/sign-in">
+          <button
+            className={cn(
+              buttonVariants({
+                variant: "pink",
+                size: "xl",
+              }),
+              "w-40 rounded-full text-lg",
+            )}
+            ref={signInButtonRef}
+            onKeyPress={handleKeyPress}
+            onMouseEnter={() => speakWithDelay("Click to go to sign in form")}
+            onFocus={() =>
+              speak(
+                "You are in the sign in page, press space to go to sign in form and continue. You can use the Tab key to move to the next field and Shift+Tab to return to the previous field.",
+              )
+            }
+            onClick={() => {
+              speak(
+                "You are now in the sign in form, please use tab to navigate.",
+              );
+              scrollToSignInform();
+            }}
+          >
+            Sign In
+          </button>
+        </Link>
 
         <div id="arrow" className="flex flex-col items-center">
           <div className="h-28 w-[2px] bg-white" />
@@ -67,6 +155,7 @@ const SignIn: FC = () => {
 
       <section
         id="signInform"
+        ref={signInformRef}
         className="container mx-auto flex h-screen items-center justify-center"
       >
         <Card className="max-w-xl flex-1 p-6">
@@ -81,6 +170,11 @@ const SignIn: FC = () => {
                 variant="outline"
                 size="xl"
                 className="flex items-center justify-start gap-32"
+                onMouseEnter={() =>
+                  speakWithDelay("Click to sign in with google")
+                }
+                onFocus={() => speak("Press enter to sign in with google")}
+                onClick={() => speak("Signing in with google")}
               >
                 <img
                   src="/assets/google.png"
@@ -93,6 +187,11 @@ const SignIn: FC = () => {
                 variant="outline"
                 size="xl"
                 className="flex items-center justify-start gap-[120px]"
+                onMouseEnter={() =>
+                  speakWithDelay("Click to sign in with microsoft")
+                }
+                onFocus={() => speak("Press enter to sign in with microsoft")}
+                onClick={() => speak("Signing in with microsoft")}
               >
                 <img
                   src="/assets/microsoft.png"
@@ -125,6 +224,10 @@ const SignIn: FC = () => {
                           type="email"
                           placeholder="Your email"
                           className="border-2 border-primary-blue border-opacity-25 focus:border-opacity-100 focus-visible:ring-0"
+                          onMouseEnter={() =>
+                            speakWithDelay("Click to enter your email")
+                          }
+                          onFocus={() => speak("Enter your email")}
                           {...field}
                         />
                       </FormControl>
@@ -143,6 +246,10 @@ const SignIn: FC = () => {
                           type="password"
                           placeholder="Password"
                           className="border-2 border-primary-blue border-opacity-25 focus:border-opacity-100 focus-visible:ring-0"
+                          onMouseEnter={() =>
+                            speakWithDelay("Click to enter your password")
+                          }
+                          onFocus={() => speak("Enter your password")}
                           {...field}
                         />
                       </FormControl>
@@ -151,7 +258,17 @@ const SignIn: FC = () => {
                 />
 
                 <div className="my-2 flex gap-2">
-                  <Checkbox id="terms" />
+                  <Checkbox
+                    id="terms"
+                    onMouseEnter={() =>
+                      speakWithDelay("Click to activate the Remember Me option")
+                    }
+                    onFocus={() =>
+                      speak("Press space to select the Remember Me checkbox")
+                    }
+                    onClick={toggleRememberMe}
+                    checked={isRememberMeChecked}
+                  />
                   <Label
                     htmlFor="terms"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -165,6 +282,9 @@ const SignIn: FC = () => {
                   variant="pink"
                   size="xl"
                   className="w-full"
+                  onMouseEnter={() => speakWithDelay("Click to login")}
+                  onFocus={() => speak("Press enter to login")}
+                  onClick={() => speak("Logging in")}
                 >
                   Continue
                 </Button>
@@ -172,11 +292,25 @@ const SignIn: FC = () => {
             </Form>
 
             <div className="mt-4 flex justify-center gap-2 text-center">
-              <Link to="/sign-up" className="font-semibold underline">
+              <Link
+                to="/sign-up"
+                className="font-semibold underline"
+                onMouseEnter={() => speakWithDelay("Click to go to sign up")}
+                onFocus={() => speak("Press enter to go to sign up")}
+                onClick={() => speak("Going to registration")}
+              >
                 Register
               </Link>
               <div className="w-[1px] bg-black" />
-              <a href="#" className="hover:underline">
+              <a
+                href="#"
+                className="hover:underline"
+                onMouseEnter={() =>
+                  speakWithDelay("Click to recover your account password")
+                }
+                onFocus={() => speak("Press enter to reset your password")}
+                onClick={() => speak("Resetting your password")}
+              >
                 Forgot Password
               </a>
             </div>

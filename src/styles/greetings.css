@@ -1,127 +1,124 @@
 .greetings-container {
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #3F20F3;
-    position: relative;
-    overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #3f20f3;
+  position: relative;
+  overflow: hidden;
+}
+
+.blob-image {
+  position: absolute;
+  width: 50%;
+  height: auto;
+  transform: translate(-50%, -50%);
+  top: var(--blob-top, 40%);
+  left: var(--blob-left, 65%);
+}
+
+.animation-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 4px; /* Adjust the height as needed */
+  background-color: #fe2882; /* Pink color */
+  animation: fillLine forwards;
+}
+
+@keyframes fillLine {
+  to {
+    width: 100%;
   }
-  
-  .blob-image {
-    position: absolute;
-    width: 50%;
-    height: auto;
-    transform: translate(-50%, -50%);
-    top: var(--blob-top, 40%);
-    left: var(--blob-left, 65%);
-  }
-  
-  .animation-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 4px; /* Adjust the height as needed */
-    background-color: #FE2882; /* Pink color */
-    animation: fillLine forwards;
-  }
-  
-  @keyframes fillLine {
-    to {
-      width: 100%;
-    }
-  }
-  
-  .greetings-text {
-    position: absolute;
-    text-align: left;
-    z-index: 10;
-    top: var(--text-top, 70%);
-    left: var(--text-left, 28%);
-    transform: translate(-50%, -50%);
-  }
-  
+}
+
+.greetings-text {
+  position: absolute;
+  text-align: left;
+  z-index: 10;
+  top: var(--text-top, 70%);
+  left: var(--text-left, 28%);
+  transform: translate(-50%, -50%);
+}
+
+.hi-there,
+.welcome-text,
+.rayo {
+  font-size: 5rem; /* Base font size */
+  font-weight: bold;
+}
+
+.hi-there {
+  color: #fe2882;
+  font-style: italic;
+}
+
+.welcome-text {
+  color: #fe2882;
+}
+
+.rayo {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+@media (max-width: 1045px) {
   .hi-there,
   .welcome-text,
   .rayo {
-    font-size: 5rem; /* Base font size */
-    font-weight: bold;
+    font-size: 4rem; /* Adjusted font size for screens narrower than 1045px */
   }
-  
-  .hi-there {
-    color: #FE2882;
-    font-style: italic;
-  }
-  
-  .welcome-text {
-    color: #FE2882;
-  }
-  
-  .rayo {
-    color: #FFFFFF;
-    font-weight: 600;
-  }
-  
-  @media (max-width: 1045px) {
-    .hi-there,
-    .welcome-text,
-    .rayo {
-      font-size: 4rem; /* Adjusted font size for screens narrower than 1045px */
-    }
-  
-    .blob-image {
-      width: 70%; /* Adjust blob size for these screens */
-    }
-  }
-  
-  @media (max-width: 768px) {
-    .hi-there,
-    .welcome-text,
-    .rayo {
-      font-size: 3.5rem; /* Smaller font size for tablets and large phones */
-    }
-  
-    .blob-image {
-      width: 80%; /* Keep blob size adjusted for these screens */
-    }
-  }
-  
-  @media (max-width: 666px) {
-    .hi-there,
-    .welcome-text,
-    .rayo {
-      white-space: nowrap; /* Ensures text is on one line */
 
-      font-size: 3rem; /* Even smaller font size for mobile phones */
-    }
-  
-    .blob-image {
-        top: var(--blob-top, 30%);
-        left: var(--blob-left, 50%);
-      width: 100%; 
-    }
-    .greetings-text {
-        top: var(--text-top, 70%);
-        left: var(--text-left, 55%);
-        
-      }
+  .blob-image {
+    width: 70%; /* Adjust blob size for these screens */
   }
-  @media (max-width: 425) {
-    .hi-there,
-    .welcome-text,
-    .rayo {
-      font-size: 1rem; /* Even smaller font size for mobile phones */
-    }
-  
-    .blob-image {
-      width: 70%; /* Adjust blob size for mobile screens */
-    }
-    .greetings-text {
-        top: var(--text-top, 70%);
-        left: var(--text-left, 55%);
-        
-      }
+}
+
+@media (max-width: 768px) {
+  .hi-there,
+  .welcome-text,
+  .rayo {
+    font-size: 3.5rem; /* Smaller font size for tablets and large phones */
   }
-  
+
+  .blob-image {
+    width: 80%; /* Keep blob size adjusted for these screens */
+  }
+}
+
+@media (max-width: 666px) {
+  .hi-there,
+  .welcome-text,
+  .rayo {
+    white-space: nowrap; /* Ensures text is on one line */
+
+    font-size: 3rem; /* Even smaller font size for mobile phones */
+  }
+
+  .blob-image {
+    top: var(--blob-top, 30%);
+    left: var(--blob-left, 50%);
+    width: 100%;
+  }
+  .greetings-text {
+    top: var(--text-top, 70%);
+    left: var(--text-left, 55%);
+  }
+}
+@media (max-width: 425) {
+  .hi-there,
+  .welcome-text,
+  .rayo {
+    font-size: 1rem; /* Even smaller font size for mobile phones */
+  }
+
+  .blob-image {
+    width: 70%; /* Adjust blob size for mobile screens */
+  }
+  .greetings-text {
+    top: var(--text-top, 70%);
+    left: var(--text-left, 55%);
+  }
+}
