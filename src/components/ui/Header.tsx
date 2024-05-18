@@ -242,6 +242,7 @@ const Header: FC<HeaderProps> = ({
         setSearchInput("");
       } else if (query === "/find" || query === "find") {
         fileInputRef.current?.click();
+        speak("Please choose your file, you may search the file by its name.");
       } else if (query === "/logout") {
         handleLogout();
         setSearchInput("");
