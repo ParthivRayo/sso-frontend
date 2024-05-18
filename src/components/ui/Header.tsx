@@ -292,20 +292,6 @@ const Header: FC<HeaderProps> = ({
     }
   };
 
-  // const handleReadPdf = async () => {
-  //   if (!selectedFilePath) {
-  //     console.error("No file selected to read.");
-  //     return;
-  //   }
-  //   try {
-  //     const response = await axios.post('http://localhost:3001/read-pdf', { filePath: selectedFilePath });
-  //     const { text } = response.data;
-  //     speakText(text, true);
-  //   } catch (error) {
-  //     console.error('Error reading PDF:', error);
-  //   }
-  // };
-
   const speakText = (text: string, reset = false) => {
     if (reset) {
       speechSynthesis.cancel();
@@ -336,24 +322,6 @@ const Header: FC<HeaderProps> = ({
       console.error("Your browser does not support speech synthesis.");
     }
   };
-
-  // const handleTogglePauseRead = () => {
-  //   if (speechSynthesis.speaking && !speechSynthesis.paused) {
-  //     speechSynthesis.pause();
-  //   } else if (speechSynthesis.paused) {
-  //     speechSynthesis.resume();
-  //   } else {
-  //     console.log("No active speech to pause or resume.");
-  //   }
-  // };
-
-  // const handleContinueRead = () => {
-  //   if (speechSynthesis.paused) {
-  //     speechSynthesis.resume();
-  //   } else {
-  //     console.log("No paused speech to continue.");
-  //   }
-  // };
 
   return (
     <header
