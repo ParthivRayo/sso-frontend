@@ -5,7 +5,7 @@ const config = {
     clientId: "60d3822b-f99e-42a4-aec9-2b4057f419e3", // Replace with your Application (client) ID
     authority:
       "https://login.microsoftonline.com/d990e2ca-a17f-4f34-8c22-571ff19ea12f", // Replace with your Directory (tenant) ID
-    redirectUri: import.meta.env.VITE_FRONTEND_URL, // Use the environment variable
+    redirectUri: "https://sso-frontend-xi.vercel.app",
   },
   cache: {
     cacheLocation: "sessionStorage",
