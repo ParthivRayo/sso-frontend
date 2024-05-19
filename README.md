@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # EmpowerEase App frontend
 
 To run this app locally you need to have `NodeJS` and `NPM` installed.
@@ -10,3 +11,7 @@ npm install
 npm run dev
 
 ```
+=======
+# empowereasesso-frontend
+Frontend App for SSO
+>>>>>>> origin/main
