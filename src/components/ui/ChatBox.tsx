@@ -5,9 +5,15 @@ interface ChatBoxProps {
   question: string;
   response: string;
   onClose: () => void;
+  isImage: boolean; // New prop to indicate if the content is an image
 }
 
-const ChatBox: React.FC<ChatBoxProps> = ({ question, response, onClose }) => {
+const ChatBox: React.FC<ChatBoxProps> = ({
+  question,
+  response,
+  onClose,
+  isImage,
+}) => {
   const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
   const [isSpeaking, setIsSpeaking] = useState(false); // State to track speaking status
   const [currentResponse, setCurrentResponse] = useState(""); // New state for current response
@@ -25,6 +31,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ question, response, onClose }) => {
       utteranceRef.current = null;
     }
   };
+
   const speakText = (text: string) => {
     speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
@@ -44,7 +51,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ question, response, onClose }) => {
     const timer = setTimeout(() => {
       setCurrentResponse(response);
       speakText(response);
-    }, 2000); // 2000 ms -> 2 second
+    }, 2000); // 2000 ms -> 2 seconds
 
     return () => {
       clearTimeout(timer); // Clean up the timer on unmount
@@ -73,7 +80,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ question, response, onClose }) => {
         </button>
       </div>
       <div className="chatbox-body">
-        <div className="chatbox-question">{question}</div>
+        {!isImage && <div className="chatbox-question">{question}</div>}
         <div className="chatbox-response">{currentResponse}</div>
       </div>
     </div>

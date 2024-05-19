@@ -21,7 +21,11 @@ interface HeaderProps {
   onAddFile: (file: string) => void;
   toggleDarkMode: () => void;
   darkMode: boolean;
-  onAskCommand: (question: string, pageNumber: number) => void; // Updated prop
+  onAskCommand: (question: string, pageNumber: number) => void;
+  onAddImage: (imageUrl: string, description: string) => void;
+  showChatbox: boolean; // Add this prop
+  chatResponse: string; // Add this prop
+  setShowChatbox: React.Dispatch<React.SetStateAction<boolean>>; // Add this prop
 }
 
 const Header: FC<HeaderProps> = ({
@@ -29,6 +33,10 @@ const Header: FC<HeaderProps> = ({
   toggleDarkMode,
   darkMode,
   onAskCommand,
+  onAddImage, // New prop
+  chatResponse, // New prop
+  setShowChatbox, // New prop
+  showChatbox,
 }) => {
   const [searchInput, setSearchInput] = useState("");
   const [isHelpModalVisible, setHelpModalVisible] = useState(false);
@@ -41,6 +49,7 @@ const Header: FC<HeaderProps> = ({
     const savedPreference = localStorage.getItem("speechEnabled");
     return savedPreference === "true";
   });
+  const [imageUrl, setImageUrl] = useState<string | undefined>(undefined); // New state for image URL
 
   useEffect(() => {
     speechSynthesis.cancel();
@@ -95,8 +104,9 @@ const Header: FC<HeaderProps> = ({
       const helpText = `
         /find to find and upload files from your computer or online storage.
         /ask to talk to the smart assistant for info, commands, or a chat buddy.
-        /read to make it read things out loud.
         /logout to logout
+        /repeat to repeat the response
+        /read to make it read things out loud.
         /pause to stop the reading.
         /manage to open Calendar.
         /add or /delete to add or remove items from your Calendar and Plans.
@@ -127,11 +137,12 @@ const Header: FC<HeaderProps> = ({
 
   const handleEscape = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === "Escape" && !showChatbox) {
+        // Add check for showChatbox
         toggleHelpModal();
       }
     },
-    [toggleHelpModal],
+    [toggleHelpModal, showChatbox], // Add showChatbox to dependencies
   );
 
   useEffect(() => {
@@ -153,54 +164,84 @@ const Header: FC<HeaderProps> = ({
 
     try {
       const url = URL.createObjectURL(file);
-      onAddFile(url);
+      const fileType = file.type;
 
-      const formData = new FormData();
-      formData.append("file", file);
+      if (fileType.startsWith("image/")) {
+        setImageUrl(url); // Display the image immediately
+        const imageName = file.name;
+        speakText(`Ingesting the image ${imageName}, please wait`);
+        const formData = new FormData();
+        formData.append("file", file);
 
-      setSearchInput("");
-      speechSynthesis.cancel();
-
-      const fileName = file.name;
-      speakText(`Ingesting the file ${fileName}, please wait`);
-      console.log("Ingesting file");
-
-      // Retrieve chat_id from cookies
-      const cookies = document.cookie.split(";").reduce(
-        (acc, cookie) => {
-          const [key, value] = cookie.split("=");
-          acc[key.trim()] = value.trim();
-          return acc;
-        },
-        {} as Record<string, string>,
-      );
-
-      const chatId = cookies["chat_id"];
-      if (!chatId) {
-        console.error("chat_id not found in cookies");
-        speakText("chat_id not found");
-        return;
-      }
-
-      // Construct the URL with the chat_id as userid
-      const requestUrl = `http://172.210.57.85/api/ingest_pdf_with_metadata?userid=${chatId}`;
-
-      const uploadResponse = await axios.post(requestUrl, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      if (uploadResponse.status === 200) {
-        console.log("File uploaded successfully:", uploadResponse.data);
-        speakText(uploadResponse.data.message);
-      } else {
-        console.error(
-          "File upload failed:",
-          uploadResponse.status,
-          uploadResponse.data,
+        const uploadResponse = await axios.post(
+          "http://172.210.57.85/api/create_description_of_image",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          },
         );
-        speakText("Failed to ingest file");
+
+        if (uploadResponse.status === 200) {
+          const { Response } = uploadResponse.data;
+          onAddImage(url, Response);
+        } else {
+          console.error("Image upload failed:", uploadResponse.status);
+        }
+      } else if (fileType === "application/pdf") {
+        setImageUrl(undefined); // Clear image state if PDF is uploaded
+        onAddFile(url);
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        setSearchInput("");
+        speechSynthesis.cancel();
+
+        const fileName = file.name;
+        speakText(`Ingesting the file ${fileName}, please wait`);
+        console.log("Ingesting file");
+
+        // Retrieve chat_id from cookies
+        const cookies = document.cookie.split(";").reduce(
+          (acc, cookie) => {
+            const [key, value] = cookie.split("=");
+            acc[key.trim()] = value.trim();
+            return acc;
+          },
+          {} as Record<string, string>,
+        );
+
+        const chatId = cookies["chat_id"];
+        if (!chatId) {
+          console.error("chat_id not found in cookies");
+          speakText("chat_id not found");
+          return;
+        }
+
+        // Construct the URL with the chat_id as userid
+        const requestUrl = `http://172.210.57.85/api/ingest_pdf_with_metadata?userid=${chatId}`;
+
+        const uploadResponse = await axios.post(requestUrl, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        if (uploadResponse.status === 200) {
+          console.log("File uploaded successfully:", uploadResponse.data);
+          speakText(uploadResponse.data.message);
+        } else {
+          console.error(
+            "File upload failed:",
+            uploadResponse.status,
+            uploadResponse.data,
+          );
+          speakText("Failed to ingest file");
+        }
+      } else {
+        alert("Unsupported file type. Please upload a PDF or image file.");
       }
     } catch (error) {
       console.error("Error handling file:", error);
@@ -227,25 +268,36 @@ const Header: FC<HeaderProps> = ({
       const question = query.replace(/\/?ask\s*/i, "");
 
       if (query.startsWith("/ask ") || query.startsWith("ask ")) {
-        if (pageNumberMatch) {
-          const pageNumber = parseInt(
-            pageNumberMatch[1] ||
-              pageNumberMatch[2] ||
-              pageNumberMatch[3] ||
-              pageNumberMatch[4] ||
-              pageNumberMatch[5],
-            10,
-          );
-          onAskCommand(question, pageNumber); // Include page number
+        if (imageUrl) {
+          speakText("Please select a PDF file to use the /ask command.");
         } else {
-          onAskCommand(question, -1); // Use -1 or any value to indicate no page number
+          if (pageNumberMatch) {
+            const pageNumber = parseInt(
+              pageNumberMatch[1] ||
+                pageNumberMatch[2] ||
+                pageNumberMatch[3] ||
+                pageNumberMatch[4] ||
+                pageNumberMatch[5],
+              10,
+            );
+            onAskCommand(question, pageNumber); // Include page number
+          } else {
+            onAskCommand(question, -1); // Use -1 or any value to indicate no page number
+          }
         }
         setSearchInput("");
       } else if (query === "/find" || query === "find") {
         fileInputRef.current?.click();
+        setSearchInput("");
         speak("Please choose your file, you may search the file by its name.");
       } else if (query === "/logout") {
         handleLogout();
+        setSearchInput("");
+      } else if (query === "/repeat" || query === "repeat") {
+        if (!showChatbox) {
+          setShowChatbox(true);
+        }
+        speakText(chatResponse, true);
         setSearchInput("");
       } else {
         speak(
@@ -326,7 +378,9 @@ const Header: FC<HeaderProps> = ({
 
   return (
     <header
-      className={`header mt-2 flex items-center justify-between p-4 ${darkMode ? "bg-gray-800" : "bg-white"}`}
+      className={`header mt-2 flex items-center justify-between p-4 ${
+        darkMode ? "bg-gray-800" : "bg-white"
+      }`}
     >
       <div className="toggle-container" aria-hidden="true">
         <label
@@ -410,11 +464,15 @@ const Header: FC<HeaderProps> = ({
                 assistant for info, commands, or a chat buddy.
               </p>
               <p className="command-text">
-                <span className="key-text">/read</span> to make it read things
-                out loud.
+                <span className="key-text">/logout</span> to logout.
               </p>
               <p className="command-text">
-                <span className="key-text">/logout</span> to logout.
+                <span className="key-text">/repeat</span> to repeat the
+                response.
+              </p>
+              <p className="command-text">
+                <span className="key-text">/read</span> to make it read things
+                out loud.
               </p>
               <p className="command-text">
                 <span className="key-text">/pause</span> to stop the reading.
@@ -451,7 +509,7 @@ const Header: FC<HeaderProps> = ({
         ref={fileInputRef}
         style={{ display: "none" }}
         onChange={handleFileSelect}
-        accept="application/pdf"
+        accept="application/pdf,image/*"
       />
     </header>
   );
