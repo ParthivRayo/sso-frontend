@@ -20,7 +20,6 @@ const Modal: React.FC<ModalProps> = ({ onConfirm, onDeny }) => {
         utterance.pitch = 2;
         utterance.rate = 0.8;
         utterance.lang = "fr-FR";
-        speechSynthesis.cancel(); // Cancel previous speech to prevent overlap
         speechSynthesis.speak(utterance);
       }
     };
@@ -79,14 +78,26 @@ const Modal: React.FC<ModalProps> = ({ onConfirm, onDeny }) => {
         <Button
           aria-label="Yes, disable voice guidance"
           ref={firstButtonRef}
-          onClick={onConfirm}
+          onClick={() => {
+            onConfirm();
+            speechSynthesis.cancel();
+            speechSynthesis.speak(
+              new SpeechSynthesisUtterance("Disabling speech"),
+            );
+          }}
           className={cn(buttonVariants({ variant: "blue" }))}
         >
           Yes, disable voice guidance
         </Button>
         <Button
           aria-label="No, continue with voice guidance"
-          onClick={onDeny}
+          onClick={() => {
+            onDeny();
+            speechSynthesis.cancel();
+            speechSynthesis.speak(
+              new SpeechSynthesisUtterance("Enabling speech"),
+            );
+          }}
           className={cn(buttonVariants({ variant: "pink" }))}
         >
           No, continue with voice guidance
