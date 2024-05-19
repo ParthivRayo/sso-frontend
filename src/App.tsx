@@ -57,7 +57,7 @@ const App = () => {
       );
       //message.pitch = 2;
       message.rate = 0.8;
-      message.lang = "fr-FR";
+      //message.lang = "fr-FR";
       window.speechSynthesis.cancel();
       window.speechSynthesis.speak(message);
     } else {

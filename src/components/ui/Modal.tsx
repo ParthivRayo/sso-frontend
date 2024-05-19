@@ -19,7 +19,7 @@ const Modal: React.FC<ModalProps> = ({ onConfirm, onDeny }) => {
         const utterance = new SpeechSynthesisUtterance(message);
         utterance.pitch = 2;
         utterance.rate = 0.8;
-        utterance.lang = "fr-FR";
+        //utterance.lang = "fr-FR";
         speechSynthesis.speak(utterance);
       }
     };

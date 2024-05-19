@@ -62,7 +62,7 @@ const Header: FC<HeaderProps> = ({
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.pitch = 2;
         utterance.rate = 0.8;
-        utterance.lang = "fr-FR";
+        //utterance.lang = "fr-FR";
         speechSynthesis.cancel();
         setTimeout(() => {
           speechSynthesis.speak(utterance);
@@ -112,7 +112,7 @@ const Header: FC<HeaderProps> = ({
       const utterance = new SpeechSynthesisUtterance(helpText);
       utterance.pitch = 2;
       utterance.rate = 0.8;
-      utterance.lang = "fr-FR";
+      //utterance.lang = "fr-FR";
       speechSynthesis.cancel();
       speechSynthesis.speak(utterance);
     }
@@ -346,7 +346,7 @@ const Header: FC<HeaderProps> = ({
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.pitch = 2;
     utterance.rate = 0.8;
-    utterance.lang = "fr-FR";
+    //utterance.lang = "fr-FR";
     utterance.onend = () => {
       console.log("Reading finished");
       setReading(false);
@@ -362,7 +362,7 @@ const Header: FC<HeaderProps> = ({
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.pitch = 2;
       utterance.rate = 0.8;
-      utterance.lang = "fr-FR";
+      //utterance.lang = "fr-FR";
       speechSynthesis.cancel();
       speechSynthesis.speak(utterance);
     } else {

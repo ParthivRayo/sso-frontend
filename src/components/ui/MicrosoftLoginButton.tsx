@@ -14,7 +14,7 @@ const MicrosoftLoginButton = () => {
       // Set the properties of the utterance
       utterance.pitch = 2; // Higher pitch
       utterance.rate = 0.8; // Slower rate of speech
-      utterance.lang = "fr-FR"; // French language
+      //utterance.lang = "fr-FR"; // French language
 
       // Cancel any previously scheduled speech to avoid overlaps
       speechSynthesis.cancel();
@@ -36,7 +36,7 @@ const MicrosoftLoginButton = () => {
       // Set the properties of the utterance
       utterance.pitch = 2; // Higher pitch
       utterance.rate = 0.8; // Slower rate of speech
-      utterance.lang = "fr-FR"; // French language
+      //utterance.lang = "fr-FR"; // French language
 
       // Cancel any previously scheduled speech to avoid overlaps
       speechSynthesis.cancel();
