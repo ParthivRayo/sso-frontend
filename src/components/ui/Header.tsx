@@ -60,7 +60,7 @@ const Header: FC<HeaderProps> = ({
     (text: string): void => {
       if ("speechSynthesis" in window && speechEnabled) {
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.pitch = 2;
+        //utterance.pitch = 2;
         utterance.rate = 0.8;
         //utterance.lang = "fr-FR";
         speechSynthesis.cancel();
@@ -110,7 +110,7 @@ const Header: FC<HeaderProps> = ({
         Press Escape to exit the instruction.
       `; // /read to make it read things out loud. /pause to stop the reading. /manage to open Calendar. /add or /delete to add or remove items from your Calendar and Plans. /remind to set reminders. Press and hold the Space key to speak.
       const utterance = new SpeechSynthesisUtterance(helpText);
-      utterance.pitch = 2;
+      //utterance.pitch = 2;
       utterance.rate = 0.8;
       //utterance.lang = "fr-FR";
       speechSynthesis.cancel();
@@ -344,7 +344,7 @@ const Header: FC<HeaderProps> = ({
       speechSynthesis.cancel();
     }
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.pitch = 2;
+    //utterance.pitch = 2;
     utterance.rate = 0.8;
     //utterance.lang = "fr-FR";
     utterance.onend = () => {
@@ -360,7 +360,7 @@ const Header: FC<HeaderProps> = ({
   const speak = (text: string): void => {
     if ("speechSynthesis" in window && speechEnabled) {
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.pitch = 2;
+      //utterance.pitch = 2;
       utterance.rate = 0.8;
       //utterance.lang = "fr-FR";
       speechSynthesis.cancel();

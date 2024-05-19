@@ -17,7 +17,7 @@ const Modal: React.FC<ModalProps> = ({ onConfirm, onDeny }) => {
         const message =
           "Do you have a screen reader and wish to disable additional voice guidance? Press enter to disable it and tab plus enter to continue with voice guidance.";
         const utterance = new SpeechSynthesisUtterance(message);
-        utterance.pitch = 2;
+        //utterance.pitch = 2;
         utterance.rate = 0.8;
         //utterance.lang = "fr-FR";
         speechSynthesis.speak(utterance);

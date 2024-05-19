@@ -46,7 +46,7 @@ function AfterLogin() {
       const utterance = new SpeechSynthesisUtterance(text);
 
       // Set the properties of the utterance
-      utterance.pitch = 2; // Higher pitch
+      //utterance.pitch = 2; // Higher pitch
       utterance.rate = 0.8; // Slower rate of speech
       //utterance.lang = "fr-FR"; // French language
 
