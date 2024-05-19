@@ -252,7 +252,9 @@ function AfterLogin() {
       }
     } catch (error) {
       console.error("Error fetching chat response:", error);
-      setChatResponse("Failed to communicate with the chat service.");
+      setChatResponse(
+        "This request is invalid. Please try again with an appropriate query",
+      );
     }
   };
 

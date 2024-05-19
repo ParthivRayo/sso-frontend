@@ -106,15 +106,9 @@ const Header: FC<HeaderProps> = ({
         /ask to talk to the smart assistant for info, commands, or a chat buddy.
         /logout to logout
         /repeat to repeat the response
-        /read to make it read things out loud.
-        /pause to stop the reading.
-        /manage to open Calendar.
-        /add or /delete to add or remove items from your Calendar and Plans.
-        /remind to set reminders.
         Press Enter to upload a file, give commands or send a message.
-        Press and hold the Space key to speak.
         Press Escape to exit the instruction.
-      `;
+      `; // /read to make it read things out loud. /pause to stop the reading. /manage to open Calendar. /add or /delete to add or remove items from your Calendar and Plans. /remind to set reminders. Press and hold the Space key to speak.
       const utterance = new SpeechSynthesisUtterance(helpText);
       utterance.pitch = 2;
       utterance.rate = 0.8;
@@ -470,7 +464,7 @@ const Header: FC<HeaderProps> = ({
                 <span className="key-text">/repeat</span> to repeat the
                 response.
               </p>
-              <p className="command-text">
+              {/* <p className="command-text">
                 <span className="key-text">/read</span> to make it read things
                 out loud.
               </p>
@@ -487,15 +481,15 @@ const Header: FC<HeaderProps> = ({
               </p>
               <p className="command-text">
                 <span className="key-text">/remind</span> to set reminders
-              </p>
+              </p> */}
               <p className="command-text">
                 Press <span className="key-text">Enter</span> to upload a file,
                 give commands or send a message.
               </p>
-              <p className="command-text">
+              {/* <p className="command-text">
                 Press and hold the <span className="key-text">Space</span> key
                 to speak.
-              </p>
+              </p> */}
               <p className="command-text">
                 Press <span className="key-text">Escape</span> to exit the
                 instruction.
