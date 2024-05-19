@@ -96,6 +96,7 @@ const Header: FC<HeaderProps> = ({
         /find to find and upload files from your computer or online storage.
         /ask to talk to the smart assistant for info, commands, or a chat buddy.
         /read to make it read things out loud.
+        /logout to logout
         /pause to stop the reading.
         /manage to open Calendar.
         /add or /delete to add or remove items from your Calendar and Plans.
@@ -411,6 +412,9 @@ const Header: FC<HeaderProps> = ({
               <p className="command-text">
                 <span className="key-text">/read</span> to make it read things
                 out loud.
+              </p>
+              <p className="command-text">
+                <span className="key-text">/logout</span> to logout.
               </p>
               <p className="command-text">
                 <span className="key-text">/pause</span> to stop the reading.

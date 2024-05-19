@@ -13,10 +13,6 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: add a shadow for better visibility */
 }
 
-.dropdown-item {
-  /* Style for each item in the dropdown */
-}
-
 .key-text {
   color: #c7595e; /* Red color for commands and key presses */
 }
