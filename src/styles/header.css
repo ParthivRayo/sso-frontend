@@ -1,0 +1,213 @@
+/*header.css*/
+.command-text {
+  color: #ffffff; /* Your preferred text color for the modal content */
+  margin: 0.5em;
+}
+
+.dropdown-container {
+  width: calc(100% - 2rem); /* Adjust the width as necessary */
+  top: 100%; /* Position right below the input box */
+  left: 1rem; /* Align with the input box */
+  max-height: 300px; /* Limit the height of the dropdown */
+  overflow-y: auto; /* Enable scrolling for overflow */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: add a shadow for better visibility */
+}
+
+.key-text {
+  color: #c7595e; /* Red color for commands and key presses */
+}
+.box-background {
+  margin: 2em;
+  padding: 2.5em;
+  background-color: #1f2024;
+}
+/* The modal close button styles */
+.close-button {
+  color: rgb(255, 255, 255);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 2rem;
+}
+
+/* Toggle styles */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  right: 0; /* Start from the right end */
+  left: 0;
+  bottom: 0;
+  background-color: #232327; /* Light mode background color */
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  right: 4px; /* Start from the right end */
+  bottom: 4px;
+  background-color: white; /* Toggle color */
+  transition: 0.4s;
+}
+
+/* Position the toggle to the left when checked (dark mode) */
+input:checked + .slider:before {
+  transform: translateX(-26px); /* Move to the left */
+}
+
+/* Dark mode styles */
+input:checked + .slider {
+  background-color: #ccc; /* Dark mode background color */
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+@media (max-width: 530px) {
+  .inputbox input {
+    padding: 2px 8px; /* Smaller padding */
+    font-size: 0.8rem; /* Smaller font size */
+  }
+  .inputbox input::placeholder {
+    color: #fff;
+  }
+
+  .inputbox button {
+    margin: -15px; /* Smaller padding for buttons */
+  }
+
+  .mic {
+    margin-right: -25px !important;
+  }
+  .inputbox button img {
+    width: 18px; /* Smaller images within the buttons */
+    height: 18px;
+  }
+
+  .help-button {
+    margin-right: 15px;
+    padding: 3px 15px !important; /* Smaller padding for the help button */
+    font-size: 0.8rem; /* Smaller font size for the help button */
+  }
+}
+
+/* Change the toggle color to black in dark mode */
+input:checked + .slider:before {
+  background-color: black; /* Toggle color in dark mode */
+}
+@media (max-width: 500px) {
+  .slider {
+    display: none; /* Hide the slider */
+  }
+}
+/* header.css */
+
+/* Assuming this CSS is global and not scoped to a module */
+/* Dark mode styles */
+body.dark {
+  background-color: #232327;
+  color: white;
+}
+body.dark .header .inputbox {
+  color: #000;
+}
+
+/* Specific components that should inherit the dark mode styles */
+body.dark .header,
+body.dark .footer,
+body.dark .main-content {
+  /* Add .main-content class to your main content element */
+  background-color: inherit;
+  color: inherit;
+}
+
+body.dark .footer button.text-gray-500 {
+  color: gray; /* This ensures even the text-gray-500 class text color is white in dark mode */
+}
+body.dark .footer button.text-gray-500:hover {
+  color: white; /* This ensures even the text-gray-500 class text color is white in dark mode */
+}
+body.dark .footer button {
+  color: white; /* Ensures text color changes to white */
+  transition: box-shadow 0.3s ease; /* Smooth transition for box-shadow */
+  border: none; /* Removes border */
+  border-radius: 4px; /* Softens the corners */
+}
+
+body.dark .footer button:hover {
+  color: azure;
+}
+
+.footer button:hover {
+  color: #000; /* Change text color to black on hover */
+}
+
+/* MainContent styles in header.css */
+.main-content {
+  display: flex; /* Use flexbox to manage layout */
+  justify-content: space-between; /* Distribute space between PDF and Chatbox */
+  align-items: stretch; /* Stretch children to fill the container height */
+  padding: 4px; /* Adjust padding as needed */
+  position: relative; /* Ensures absolute positioning is relative to this container */
+  height: calc(100vh - 4px); /* Full view height minus padding */
+}
+
+.main-content .pdf-container {
+  width: 65%; /* Adjust the width as needed */
+  height: 95%; /* Adjust the height as needed */
+  margin-right: 2%; /* Right margin to create space */
+  margin-left: 7%;
+  min-width: 65%;
+}
+@media (max-width: 768px) {
+  .main-content .pdf-container {
+    margin-right: 2%; /* Right margin to create space */
+    margin-left: 2%;
+    width: 100%;
+    height: 100%; /* Height reduced for narrower viewports */
+  }
+}
+
+.main-content object {
+  width: 100%; /* Makes the PDF take the full width of its container */
+  height: 100%; /* Makes the PDF take the full height of its container */
+  max-height: 100%; /* Ensures PDF doesn't exceed its container */
+}
+
+.flex-gap-4 {
+  display: flex;
+  flex-wrap: wrap; /* Allow the items to wrap as needed */
+  gap: 16px; /* Adjust the gap size as needed */
+  width: 100%; /* Take the full width */
+}
+
+/* For the search input container (assuming it has a class 'inputbox') */
+.inputbox {
+  flex-grow: 1; /* Grow to use available space */
+}
+
+/* For the toggle-container (parent of the slider) */
+.toggle-container {
+  flex-shrink: 0; /* Prevent the toggle container from shrinking */
+}
