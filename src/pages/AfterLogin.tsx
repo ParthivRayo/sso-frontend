@@ -93,7 +93,7 @@ function AfterLogin() {
         "$1",
       );
       if (idCookie) {
-        const response = await fetch("http://127.0.0.1:8000/check-session", {
+        const response = await fetch("http://172.210.57.85/api/check-session", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
