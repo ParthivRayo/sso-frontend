@@ -314,7 +314,7 @@ const Header: FC<HeaderProps> = ({
 
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/logout",
+        "http://172.210.57.85/api/logout",
         { id: idCookie },
         {
           headers: {
