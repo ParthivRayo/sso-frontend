@@ -64,7 +64,7 @@ const MicrosoftLoginButton = () => {
 
         // Send user data to the backend
         const backendResponse = await fetch(
-          "http://127.0.0.1:8000/loginmicrosoft",
+          "http://172.210.57.85/api/loginmicrosoft",
           {
             method: "POST",
             headers: {
